@@ -1,4 +1,4 @@
-# Recommendation System Project
+# Story Recommendation System
 
 ## Overview
 
@@ -6,14 +6,14 @@ This project aims to build a predictive model that recommends at least 5 pratili
 
 ## Table of Contents
 
-1. [Data Ingestion](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#data-ingestion)
-2. [Data Preprocessing](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#data-preprocessing)
-3. [Exploratory Data Analysis](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#exploratory-data-analysis)
-4. [Feature Engineering](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#feature-engineering)
-5. [Model Selection](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#model-selection)
-6. [Training &amp; Evaluation](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#training-and-evaluation)
-7. [Generate Recommendations](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#generate-recommendations)
-8. [Deployment &amp; Documentation](https://chatgpt.com/c/67b33ea1-92c8-800c-beaa-353f55e1827c#deployment-and-documentation)
+1. Data Ingestion
+2. Data Preprocessing
+3. Exploratory Data Analysis
+4. Feature Engineering
+5. Model Selection
+6. Training & Evaluation
+7. Generate Recommendations
+8. Deployment & Documentation
 
 ## 1. Data Ingestion
 
@@ -67,24 +67,66 @@ This project aims to build a predictive model that recommends at least 5 pratili
 
 ## Installation & Usage
 
-1. Clone the repository:
-   ```sh
-   git clone <repo_url>
-   cd recommendation-system
-   ```
-2. Install dependencies:
-   ```sh
-   pip install -r requirements.txt
-   ```
-3. Run the model training:
-   ```sh
-   python train.py
-   ```
-4. Generate recommendations:
-   ```sh
-   python recommend.py
-   ```
+### Prerequisites
+
+Ensure you have the following installed:
+
+* Python 3.8+
+* pip
+* Virtual environment (recommended, but optional)
+
+### Step 1: Clone the Repository
+
+```bash
+git clone <repo_url>
+cd recommendation-system
+```
+
+### Step 2: Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Step 3: Ensure Model and Data Files are Present
+
+Place the following required files in the project directory:
+
+* `best_model.pt`  (Pretrained NCF model)
+* `user_mapping.pt` (Mapping of user IDs)
+* `item_mapping.pt` (Mapping of item IDs)
+* `metadata.csv` (Metadata about the stories)
+
+### Step 4: Run the Model Training
+
+```bash
+python train.py
+```
+
+### Step 5: Generate Recommendations
+
+```bash
+python recommend.py
+```
+
+## Sample Screenshots
+
+*Add screenshots of the application interface here.*
+
+## Demo Video
+
+*Add a link or embed a demo video here.*
+
+## Technologies Used
+
+* **Streamlit** - Web UI framework
+* **PyTorch** - Model inference
+* **Pandas** - Data handling
 
 ## License
 
 This project is licensed under the MIT License.
+
+## Contact
+
+For any queries, contact [your-email@example.com](mailto:your-email@example.com)
