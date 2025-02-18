@@ -120,7 +120,7 @@ python recommend.py
 
 ## Demo Video
 
-`<video src="content\demo.mp4" controls width="600"></video>`
+`<video src="content/demo.mp4" controls width="600"></video>`
 
 
 ## Technologies Used
