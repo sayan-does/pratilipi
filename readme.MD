@@ -117,7 +117,7 @@ python recommend.py
 
 ## Demo Video
 
-<video src="./content/demo.mp4" controls width="600"></video>
+![Demo of the recommendation system in action](./content/demo.mp4)
 
 
 ## Technologies Used
