@@ -1,155 +1,120 @@
+# app.py
 import streamlit as st
 import torch
 import pandas as pd
-import numpy as np
-from torch import nn
+from model import NCF  # Import the NCF class from model.py
 
-# Define the NCF model class (same as your original implementation)
-
-
-class NCF(nn.Module):
-    def __init__(self, num_users, num_items, embedding_dim=50):
-        super(NCF, self).__init__()
-
-        # Embedding layers
-        self.user_embedding = nn.Embedding(num_users, embedding_dim)
-        self.item_embedding = nn.Embedding(num_items, embedding_dim)
-
-        # MLP layers
-        self.fc_layers = nn.Sequential(
-            nn.Linear(2 * embedding_dim, 128),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(64, 32),
-            nn.ReLU(),
-            nn.Linear(32, 1),
-            nn.Sigmoid()
-        )
-
-    def forward(self, user_input, item_input):
-        user_embedded = self.user_embedding(user_input)
-        item_embedded = self.item_embedding(item_input)
-        vector = torch.cat([user_embedded, item_embedded], dim=-1)
-        prediction = self.fc_layers(vector)
-        return prediction.squeeze()
-
-# Load model and data
-
-
-@st.cache_resource
-def load_model_and_mappings():
-    # Load mappings
-    user_mapping = torch.load('user_mapping.pt')
-    item_mapping = torch.load('item_mapping.pt')
-
-    # Initialize and load model
-    model = NCF(len(user_mapping), len(item_mapping))
-    model.load_state_dict(torch.load('best_model.pt'))
-    model.eval()
-
-    return model, user_mapping, item_mapping
-
-
-@st.cache_data
-def load_metadata():
-    return pd.read_csv('metadata.csv')
-
-
-# Set page config
+# Page config
 st.set_page_config(
-    page_title="Pratilipi Story Recommender",
-    page_icon="📚",
+    page_title="Story Recommendation System",
     layout="wide"
 )
 
-# Main app
+# Cache the model and data loading
 
+
+@st.cache_resource
+def load_model_and_data():
+    try:
+        # Load model with correct number of users and items
+        model = NCF(num_users=243606, num_items=241405,
+                    factors=50)  # Updated numbers
+        model.load_state_dict(torch.load('best_model.pt'))
+        model.eval()
+
+        # Load mappings and metadata
+        user_mapping = torch.load('user_mapping.pt')
+        item_mapping = torch.load('item_mapping.pt')
+        metadata_df = pd.read_csv('metadata.csv')
+
+        return model, user_mapping, item_mapping, metadata_df
+    except Exception as e:
+        st.error(f"Error loading model and data: {str(e)}")
+        return None, None, None, None
+
+def get_recommendations(user_id, model, user_mapping, item_mapping, metadata_df, top_k=5):
+    try:
+        # Check if user exists in mapping
+        if user_id not in user_mapping:
+            return None, "User ID not found in the training data"
+            
+        user_idx = user_mapping[user_id]
+        
+        # Get predictions for all items for this user
+        user_tensor = torch.tensor([user_idx] * len(item_mapping))
+        item_indices = torch.tensor(list(range(len(item_mapping))))
+        
+        with torch.no_grad():
+            predictions = model(user_tensor, item_indices)
+            
+        # Get top k recommendations
+        top_k_items = torch.topk(predictions, k=top_k)
+        
+        recommended_items = []
+        for idx in top_k_items.indices:
+            item_id = list(item_mapping.keys())[list(item_mapping.values()).index(idx.item())]
+            story_info = metadata_df[metadata_df['story_id'] == item_id].iloc[0]
+            recommended_items.append(story_info)
+            
+        return recommended_items, None
+        
+    except Exception as e:
+        return None, f"Error generating recommendations: {str(e)}"
 
 def main():
-    st.title("📚 Pratilipi Story Recommendation System")
-    st.markdown("""
-    This application provides personalized story recommendations based on user reading patterns.
-    Enter a user ID to get story recommendations!
-    """)
+    st.title("Story Recommendation System")
+    st.write("This application provides personalized story recommendations based on user reading patterns. Enter a user ID to get story recommendations:")
 
-    try:
-        # Load model and data
-        model, user_mapping, item_mapping = load_model_and_mappings()
-        metadata_df = load_metadata()
+    # Load model and data
+    model, user_mapping, item_mapping, metadata_df = load_model_and_data()
+    
+    if model is None:
+        st.error("Failed to load model and data. Please check the error message above.")
+        return
 
-        # Sidebar for user input
-        st.sidebar.header("Enter User Details")
-        user_id = st.sidebar.text_input("User ID", "5506791954036110")
+    # User input section
+    with st.container():
+        st.subheader("Enter User Details")
+        user_id_input = st.text_input("User ID")
 
-        if st.sidebar.button("Get Recommendations"):
+        if st.button("Get Recommendations"):
+            if not user_id_input:
+                st.warning("Please enter a User ID")
+                return
+                
             try:
-                user_id = int(user_id)
-                if user_id in user_mapping:
-                    # Generate recommendations
-                    device = torch.device(
-                        'cuda' if torch.cuda.is_available() else 'cpu')
-                    model.to(device)
-
-                    user_idx = user_mapping[user_id]
-                    user_tensor = torch.LongTensor(
-                        [user_idx] * len(item_mapping)).to(device)
-                    item_tensor = torch.LongTensor(
-                        list(range(len(item_mapping)))).to(device)
-
-                    with torch.no_grad():
-                        predictions = model(user_tensor, item_tensor)
-                        _, indices = torch.topk(predictions, 5)
-
-                        reverse_item_mapping = {
-                            v: k for k, v in item_mapping.items()}
-                        recommendations = [
-                            reverse_item_mapping[idx.item()] for idx in indices]
-
-                    # Display recommendations
-                    st.subheader("Top 5 Recommended Stories")
-                    cols = st.columns(5)
-
-                    for idx, (col, pratilipi_id) in enumerate(zip(cols, recommendations)):
-                        with col:
-                            story_info = metadata_df[metadata_df['pratilipi_id']
-                                                     == pratilipi_id].iloc[0]
-                            st.markdown(f"### Story {idx+1}")
-                            st.markdown(f"**ID:** {pratilipi_id}")
-                            st.markdown(
-                                f"**Category:** {story_info['category_name']}")
-                            st.markdown(
-                                f"**Reading Time:** {story_info['reading_time']} mins")
-                            st.markdown(
-                                f"**Published:** {pd.to_datetime(story_info['published_at']).strftime('%Y-%m-%d')}")
-
-                    # Display model metrics
-                    st.subheader("Model Performance Metrics")
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("MSE", "0.0465")
-                    with col2:
-                        st.metric("RMSE", "0.2156")
-                    with col3:
-                        st.metric("MAE", "0.1136")
-
-                else:
-                    st.error("User ID not found in the database!")
-
+                user_id = int(user_id_input)
             except ValueError:
-                st.error("Please enter a valid User ID!")
+                st.error("Please enter a valid numeric User ID")
+                return
 
-    except Exception as e:
-        st.error(f"Error loading model or data: {str(e)}")
-        st.info(
-            "Please ensure all required files (model, mappings, and metadata) are present.")
+            recommendations, error = get_recommendations(
+                user_id,
+                model,
+                user_mapping,
+                item_mapping,
+                metadata_df
+            )
+
+            if error:
+                st.error(error)
+            else:
+                st.subheader("Top 5 Recommended Stories")
+                
+                # Create columns for each recommendation
+                cols = st.columns(4)
+                
+                for idx, story in enumerate(recommendations):
+                    with cols[idx]:
+                        st.write(f"Story {idx + 1}")
+                        st.write(f"ID: {story['story_id']}")
+                        st.write(f"Category: {story['category']}")
+                        st.write(f"Reading Time: {story['reading_time']} mins")
+                        st.write(f"Published: {story['published_date']}")
 
     # Footer
     st.markdown("---")
     st.markdown("Built with Streamlit • Neural Collaborative Filtering")
-
 
 if __name__ == "__main__":
     main()
