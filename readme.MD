@@ -111,11 +111,18 @@ python recommend.py
 
 ## Sample Screenshots
 
-*Add screenshots of the application interface here.*
+![Image 1](content\metadatacsv.png)
+
+
+
+
+![Image 2](image2.jpg)
 
 ## Demo Video
 
-*Add a link or embed a demo video here.*
+
+<video src="content\demo.mp4" controls width="600"></video>
+
 
 ## Technologies Used
 
