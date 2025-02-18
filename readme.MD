@@ -111,12 +111,12 @@ python recommend.py
 
 ## Sample Screenshots
 
-![Image 1](content\metadatacsv.png)
+![view of the user interaction with books data](content\user_interactioncsv.png)
 
 
 
 
-![Image 2](image2.jpg)
+![view of the meta data](content\metadatacsv.png)
 
 ## Demo Video
 
@@ -136,4 +136,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For any queries, contact [your-email@example.com](mailto:your-email@example.com)
+For any queries, contact [Sayan Mukherjee](mailto:default0work@gmail.com)
