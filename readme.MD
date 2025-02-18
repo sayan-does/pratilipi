@@ -111,16 +111,13 @@ python recommend.py
 
 ## Sample Screenshots
 
-![view of the user interaction with books data](content\user_interactioncsv.png)
+![View of user interaction data showing reading patterns and engagement metrics](./content/user_interactioncsv.png)
 
-
-
-
-![view of the meta data](content\metadatacsv.png)
+![View of story metadata showing title, author, and genre information](./content/metadatacsv.png)
 
 ## Demo Video
 
-!<video src="content/demo.mp4" controls width="600"></video>
+!<video src="./content/demo.mp4" controls width="600"></video>
 
 
 ## Technologies Used
