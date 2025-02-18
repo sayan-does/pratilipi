@@ -17,8 +17,7 @@ st.set_page_config(
 def load_model_and_data():
     try:
         # Load model with correct number of users and items
-        model = NCF(num_users=243606, num_items=241405,
-                    factors=50)  # Updated numbers
+        model = NCF(num_users=243606, num_items=241405, factors=50)
         model.load_state_dict(torch.load('best_model.pt'))
         model.eval()
 
