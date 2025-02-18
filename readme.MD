@@ -78,7 +78,7 @@ Ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone <repo_url>
+git clone <https://github.com/sayan-does/pratilipi>
 cd recommendation-system
 ```
 
