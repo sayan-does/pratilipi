@@ -2,134 +2,80 @@
 
 ## Overview
 
-This project aims to build a predictive model that recommends at least 5 pratilipis (stories) for each user based on their reading history.
+This project develops a predictive model to recommend at least five Pratilipi stories to each user based on their reading history. The system leverages user-item interactions to generate personalized suggestions.
 
 ## Table of Contents
 
-1. Data Ingestion
-2. Data Preprocessing
-3. Exploratory Data Analysis
-4. Feature Engineering
-5. Model Selection
-6. Training & Evaluation
-7. Generate Recommendations
-8. Deployment & Documentation
+1. [Key Features](#key-features)
+2. [Data Processing Steps](#data-processing-steps)
+3. [Experimental Setup](#experimental-setup)
+4. [Results](#results)
+5. [Repository Structure](#repository-structure)
+6. [Usage](#usage)
+7. [Contributing](#contributing)
+8. [License](#license)
 
-## 1. Data Ingestion
+## Key Features
 
-* Load `User_interaction.csv`
-* Load `Meta_data.csv`
+* **Embedding Dimension** : Utilizes 50 factors for both user and item embeddings.
+* **Network Architecture** :
+* Input Layer: 100 neurons (concatenated 50-dimensional user and item embeddings).
+* Hidden Layers: 128 → 64 → 32 neurons.
+* Output Layer: 1 neuron with sigmoid activation.
+* **Regularization** : Incorporates dropout layers with a rate of 0.2 to prevent overfitting.
 
-## 2. Data Preprocessing
+## Data Processing Steps
 
-* Handle missing values
-* Convert timestamps
-* Normalize `read_percentage`
-* Merge datasets on `pratilipi_id`
+1. **Timestamp Conversion** :
 
-## 3. Exploratory Data Analysis (EDA)
+* Converted 'updated_at' and 'published_at' fields to datetime format.
+* Sorted interactions chronologically.
 
-* Analyze user reading behavior patterns
-* Study story popularity distribution
-* Identify genre-based trends
+1. **Data Organization** :
 
-## 4. Feature Engineering
+* Created user and item mappings for model input.
+* Normalized reading percentages.
+* Addressed missing values appropriately.
 
-* Extract user preferences (favorite genres, authors)
-* Compute story similarity (based on metadata)
-* Identify time-based trends
+1. **Data Preparation** :
 
-## 5. Model Selection
+* Split data into training and testing sets.
+* Constructed user-item interaction matrices.
+* Generated negative samples for training.
 
-* **Collaborative Filtering:** SVD, ALS
-* **Content-Based Filtering:** TF-IDF, Cosine Similarity
-* **Hybrid Approach:** Combination of both methods
+## Experimental Setup
 
-## 6. Training & Evaluation
+* **Model Configuration** :
+* Embedding Size: 50
+* Learning Rate: Determined through experimentation.
+* Batch Size: Optimized for efficient training.
+* Dropout Rate: 0.2 for regularization.
+* **Training Process** :
+* Employed binary cross-entropy loss.
+* Implemented mini-batch training.
+* Monitored training and validation metrics.
+* Saved the best-performing model based on validation performance.
+* **Evaluation Metrics** :
+* Top-K recommendation accuracy.
+* Hit rate.
+* Model convergence monitoring.
 
-* Train model using **75% of data**
-* Validate on **25% test data**
-* Evaluate using:
-  * Precision@5
-  * Recall@5
-  * Mean Average Precision (MAP)
+## Results
 
-## 7. Generate Recommendations
+* Successfully generated personalized top-5 recommendations for users.
+* The model demonstrated good convergence during training.
+* Effectively handled sparse user-item interactions.
+* Provided a scalable solution suitable for large user bases.
 
-* Predict **top 5 pratilipis** per user
-* Rank recommendations based on relevance
+## Repository Structure
 
-## 8. Deployment & Documentation
-
-* Save trained model
-* Create API or script for inference
-* Write **README & project report**
-
-## Installation & Usage
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-* Python 3.8+
-* pip
-* Virtual environment (recommended, but optional)
-
-### Step 1: Clone the Repository
-
-```bash
-git clone <https://github.com/sayan-does/pratilipi>
-cd recommendation-system
-```
-
-### Step 2: Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 3: Ensure Model and Data Files are Present
-
-Place the following required files in the project directory:
-
-* `best_model.pt`  (Pretrained NCF model)
-* `user_mapping.pt` (Mapping of user IDs)
-* `item_mapping.pt` (Mapping of item IDs)
-* `metadata.csv` (Metadata about the stories)
-
-### Step 4: Run the Model Training
-
-```bash
-python train.py
-```
-
-### Step 5: Generate Recommendations
-
-```bash
-python recommend.py
-```
-
-## Sample Screenshots
-
-![View of user interaction data showing reading patterns and engagement metrics](./content/user_interactioncsv.png)
-
-![View of story metadata showing title, author, and genre information](./content/metadatacsv.png)
-
-## Demo Video
-
-![Demo of the recommendation system in action](./content/demo.mp4)
+* `main.py`: Main script to run the recommendation system.
+* `model.py`: Contains the neural network model definition.
+* `reccomendation_experiment.ipynb`: Jupyter notebook detailing the experimentation process.
+* `requirements.txt`: Lists the dependencies required to run the project.
+* `best_model.pt`: Saved state of the best-performing model.
+* `user_mapping.pt` & `item_mapping.pt`: Serialized user and item mappings.
+* `content/`: Directory containing data files.
 
 
-## Technologies Used
-
-* **Streamlit** - Web UI framework
-* **PyTorch** - Model inference
-* **Pandas** - Data handling
-
-## License
-
-This project is licensed under the MIT License.
-
-## Contact
-
-For any queries, contact [Sayan Mukherjee](mailto:default0work@gmail.com)
+## Plots
