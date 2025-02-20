@@ -1,4 +1,3 @@
-
 # Story Recommendation System
 
 ## Overview
@@ -82,17 +81,17 @@ This project develops a predictive model to recommend at least five Pratilipi st
 
 ## Dataset Preview
 
-![preview of metadata.csv](https://chatgpt.com/c/content/metadatacsv.png)
+![preview of metadata.csv](content/metadatacsv.png)
 
-![preview of user interaction csv](https://chatgpt.com/c/content/user_interactioncsv.png)
+![preview of user interaction csv](content/user_interactioncsv.png)
 
 ## Plots
 
-![Plot 1 - Average Read](https://chatgpt.com/c/content/avg-read.png)
+![Plot 1 - Average Read](content/avg-read.png)
 
-![Plot 2 - Genre Distribution](https://chatgpt.com/c/content/genre.png)
+![Plot 2 - Genre Distribution](content/genre.png)
 
-![Plot 3 - Story Popularity](https://chatgpt.com/c/content/story-pop.png)
+![Plot 3 - Story Popularity](content/story-pop.png)
 
 ## Model Architecture
 
@@ -149,6 +148,9 @@ MAE measures the average absolute difference between predicted and actual rating
 
 * **Computed Value:** `0.1136`
 
-## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Demonstration
+
+Deployed the model locally in a streamlit web application.
+
+![Demo](content\demo-ezgif.com-video-to-gif-converter.gif)
