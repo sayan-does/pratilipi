@@ -153,4 +153,4 @@ MAE measures the average absolute difference between predicted and actual rating
 
 Deployed the model locally in a streamlit web application.
 
-![Demo](content\demo-ezgif.com-video-to-gif-converter.gif)
+![Demo](content/demo-ezgif.com-video-to-gif-converter.gif)
