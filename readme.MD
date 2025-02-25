@@ -4,28 +4,6 @@
 
 This project develops a predictive model to recommend at least five Pratilipi stories to each user based on their reading history. The system leverages user-item interactions to generate personalized suggestions.
 
-## Table of Contents
-
-1. [Key Features](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#key-features)
-2. [Data Processing Steps](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#data-processing-steps)
-3. [Experimental Setup](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#experimental-setup)
-4. [Results](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#results)
-5. [Repository Structure](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#repository-structure)
-6. [Dataset Preview](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#dataset-preview)
-7. [Plots](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#plots)
-8. [Model Architecture](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#model-architecture)
-9. [Evaluation Metrics](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#evaluation-metrics)
-10. [License](https://chatgpt.com/c/67b707f3-ddcc-800c-98f0-cadf987991ac#license)
-
-## Key Features
-
-* **Embedding Dimension** : Utilizes 50 factors for both user and item embeddings.
-* **Network Architecture** :
-* Input Layer: 100 neurons (concatenated 50-dimensional user and item embeddings).
-* Hidden Layers: 128 → 64 → 32 neurons.
-* Output Layer: 1 neuron with sigmoid activation.
-* **Regularization** : Incorporates dropout layers with a rate of 0.2 to prevent overfitting.
-
 ## Data Processing Steps
 
 1. **Timestamp Conversion** :
@@ -153,4 +131,4 @@ MAE measures the average absolute difference between predicted and actual rating
 
 Deployed the model locally in a streamlit web application.
 
-![Demo](content\demo-ezgif.com-video-to-gif-converter.gif)
+![Demo](content/demo-ezgif.com-video-to-gif-converter.gif)
